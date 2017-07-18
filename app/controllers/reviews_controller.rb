@@ -2,8 +2,21 @@ class ReviewsController < ApplicationController
 
   def index
     author = params[:author]
-    @reviews = Review.search(author)
-    json_response(@reviews)
+    country = params[:country]
+    rating = params[:rating]
+    @reviews = Review.all
+    @author = Review.search(author)
+    @country = Review.find_country(country)
+    # @rating = Review.highest_rating(rating)
+    if @reviews
+      json_response(@reviews)
+    elsif author
+      json_response(@author)
+    elsif country
+      json_response(@country)
+    else
+      json_response(@rating)
+    end
   end
 
     def show
@@ -37,6 +50,6 @@ class ReviewsController < ApplicationController
     end
 
     def review_params
-      params.permit(:author, :content)
+      params.permit(:author, :content, :country, :rating)
     end
 end
