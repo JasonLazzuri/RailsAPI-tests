@@ -4,7 +4,7 @@ class ReviewsController < ApplicationController
     author = params[:author]
     country = params[:country]
     rating = params[:rating]
-    @reviews = Review.all
+    @reviews = Review.paginate(:page => params[:page])
     @author = Review.search(author)
     @country = Review.find_country(country)
     # @rating = Review.highest_rating(rating)
